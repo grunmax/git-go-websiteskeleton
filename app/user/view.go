@@ -1,22 +1,25 @@
 package user
 
 import (
+	"fmt"
 	"html/template"
 	"net/http"
 
 	"github.com/grunmax/git-go-websiteskeleton/app/common"
-
-	"github.com/gorilla/mux"
+	"github.com/julienschmidt/httprouter"
 )
 
-func GetViewPage(rw http.ResponseWriter, req *http.Request) {
+func Hello(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
+	fmt.Fprintf(w, "hello, %s!\n", ps.ByName("id"))
+}
+
+func GetViewPage(rw http.ResponseWriter, req *http.Request, ps httprouter.Params) {
 	type Page struct {
 		Title  string
 		UserId string
 	}
 
-	params := mux.Vars(req)
-	userId := params["id"]
+	userId := ps.ByName("id")
 
 	p := Page{
 		Title:  "user_view",

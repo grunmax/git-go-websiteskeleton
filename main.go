@@ -11,21 +11,20 @@ import (
 	"github.com/grunmax/git-go-websiteskeleton/app/user"
 
 	"github.com/golang/glog"
-	"github.com/gorilla/mux"
+	"github.com/julienschmidt/httprouter"
 )
 
 func main() {
 	flag.Parse()
 	defer glog.Flush()
 
-	router := mux.NewRouter()
+	router := httprouter.New()
 	http.Handle("/", httpInterceptor(router))
 
-	router.HandleFunc("/", home.GetHomePage).Methods("GET")
-	router.HandleFunc("/user{_:/?}", user.GetHomePage).Methods("GET")
+	router.GET("/", home.GetHomePage)
+	router.GET("/user", user.GetHomePage)
 
-	router.HandleFunc("/user/view/{id:[0-9]+}", user.GetViewPage).Methods("GET")
-	router.HandleFunc("/user/{id:[0-9]+}", user.GetViewPage).Methods("GET")
+	router.GET("/user/:id", user.GetViewPage)
 
 	fileServer := http.StripPrefix("/static/", http.FileServer(http.Dir("static")))
 	http.Handle("/static/", fileServer)
