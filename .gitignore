@@ -3,4 +3,4 @@ access_log.txt
 main
 !main.go
 .idea/
-git-go-websiteskeleton
+git-go-websiteskeleton*
